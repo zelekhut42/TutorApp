@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">TutorApp</string>
+    <string name="LoginPasswordHint">Password</string>
+    <string name="LoginUsernameText">Username</string>
+    <string name="LoginButtonText">Login</string>
+    <string name="SkillPageButtonText">Skills</string>
+    <string name="TutorSearchButtonText">Search For Tutors</string>
+    <string name="MyTutorsButtonText">My Tutors</string>
+    <string name="MyStudentsButtonText">My Students</string>
+    <string name="StudentSearchButtonText">Search For Students</string>
+    <string name="title_activity_tutor_search">TutorSearchActivity</string>
+    <string name="title_activity_student_search">StudentSearchActivity</string>
+    <string name="title_activity_my_students">MyStudentsActivity</string>
+    <string name="title_activity_my_tutors">MyTutorsActivity</string>
+    <string name="title_activity_skill_page">SkillPageActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="TutorSearchHintText">Enter Skill</string>
+    <string name="TutorSkillSearchButtonText">Search For Tutor</string>
+</resources>
