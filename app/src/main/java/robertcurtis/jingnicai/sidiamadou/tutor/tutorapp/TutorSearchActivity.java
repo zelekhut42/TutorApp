@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -26,13 +27,14 @@ public class TutorSearchActivity extends AppCompatActivity implements View.OnCli
     private RecyclerView TutorSearchRecyclerView;
     private RecyclerView.Adapter TutorSearchAdapter;
     private RecyclerView.LayoutManager TutorSearchLayoutManager;
+    private ArrayList<TutorSearchItem> TutorSearchList = new ArrayList<>();
 
     private String StudentID;
     private String TutorID;
 
     Button searchBtn;
     EditText searchEditText;
-    LinearLayout recyclerViewHolder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class TutorSearchActivity extends AppCompatActivity implements View.OnCli
         searchBtn = findViewById(R.id.TutorSkillSearchButton);
         searchBtn.setOnClickListener(this);
         searchEditText = findViewById(R.id.TutorSearchEditText);
-        recyclerViewHolder = findViewById(R.id.TutorSearchRecyclerViewHolder);
+
 
 
         Intent i = getIntent();
@@ -50,6 +52,19 @@ public class TutorSearchActivity extends AppCompatActivity implements View.OnCli
         StudentID = extras.getString("StudentID");
         TutorID = extras.getString("TutorID");
 
+
+        TutorSearchRecyclerView = findViewById(R.id.TutorSearchRecyclerView);
+        TutorSearchRecyclerView.setHasFixedSize(true);
+        TutorSearchLayoutManager = new LinearLayoutManager(this);
+        TutorSearchRecyclerView.setLayoutManager(TutorSearchLayoutManager);
+        //TutorSearchRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        TutorSearchAdapter = new TutorSearchAdapter(TutorSearchList);
+
+
+        TutorSearchRecyclerView.setAdapter(TutorSearchAdapter);
+
+
     }
 
 
@@ -57,7 +72,13 @@ public class TutorSearchActivity extends AppCompatActivity implements View.OnCli
     {
         int id=v.getId();
         if(id==R.id.TutorSkillSearchButton) {
-            ArrayList<TutorSearchItem> TutorSearchList = new ArrayList<>();
+
+
+
+            TutorSearchList.clear();
+
+
+
             String enteredSearch = searchEditText.getText().toString();
 
             String sql = "select Tutor.tutor_FName, Tutor.tutor_LName, Major.major_Name from Tutor inner join HasSkills on Tutor.tutorID=HasSkills.tutorID inner join SkillSet on HasSkills.skillID=SkillSet.skillID left join Major on Tutor.majorID=Major.majorID where SkillSet.skill_Name=" + "'" + enteredSearch + "'";
@@ -74,17 +95,12 @@ public class TutorSearchActivity extends AppCompatActivity implements View.OnCli
             }
 
 
-            TutorSearchRecyclerView = findViewById(R.id.TutorSearchRecyclerView);
-            TutorSearchRecyclerView.setHasFixedSize(true);
-            TutorSearchLayoutManager = new LinearLayoutManager(this);
-            TutorSearchRecyclerView.setLayoutManager(TutorSearchLayoutManager);
+
+
+            TutorSearchAdapter.notifyDataSetChanged();
 
 
 
-            TutorSearchAdapter = new TutorSearchAdapter(TutorSearchList);
-
-
-            TutorSearchRecyclerView.setAdapter(TutorSearchAdapter);
 
 
 
