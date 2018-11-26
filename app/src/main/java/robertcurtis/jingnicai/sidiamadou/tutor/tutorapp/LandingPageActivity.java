@@ -41,34 +41,29 @@ public class LandingPageActivity extends AppCompatActivity implements OnClickLis
                 Intent i = new Intent(this, SkillPageActivity.class);
                 i.putExtras(extras);
                 this.startActivity(i);
-                finish();
         } else if (id == R.id.TutorSkillSearchButton) {
             if (!"null".equals(extras.getString("StudentID"))) {
                 Intent i = new Intent(this, TutorSearchActivity.class);
                 i.putExtras(extras);
                 this.startActivity(i);
-                finish();
             }
         } else if (id == R.id.StudentSearchButton) {
             if (!"null".equals(extras.getString("TutorID"))) {
                 Intent i = new Intent(this, StudentSearchActivity.class);
                 i.putExtras(extras);
                 this.startActivity(i);
-                finish();
             }
         } else if (id == R.id.MyStudentsButton) {
             if (!"null".equals(extras.getString("TutorID"))) {
                 Intent i = new Intent(this, MyStudentsActivity.class);
                 i.putExtras(extras);
                 this.startActivity(i);
-                finish();
             }
         } else if (id == R.id.MyTutorsButton) {
             if (!"null".equals(extras.getString("StudentID"))) {
                 Intent i = new Intent(this, MyTutorsActivity.class);
                 i.putExtras(extras);
                 this.startActivity(i);
-                finish();
             }
         }
     }

@@ -15,12 +15,14 @@ import java.util.ArrayList;
 
 import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.DBOperator;
 import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.MyStudentsAdapter;
+import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.MyTutorsAdapter;
 
 public class MyTutorsActivity extends AppCompatActivity {
 
     private RecyclerView MyTutorsRecyclerView;
-    private RecyclerView.Adapter MyTutorsAdapter;
+    private MyTutorsAdapter MyTutorsAdapter;
     private RecyclerView.LayoutManager MyTutorsLayoutManager;
+    private ArrayList<MyTutorsItem> MyTutorsList = new ArrayList<>();
 
     private String StudentID;
     private String TutorID;
@@ -37,9 +39,9 @@ public class MyTutorsActivity extends AppCompatActivity {
 
 
 
-        ArrayList<MyStudentsItem> MyTutorsList = new ArrayList<>();
 
-        String sql = "select Tutor.tutor_FName, Tutor.tutor_LName, Major.major_Name from Tutor inner join IsTutoring on Tutor.tutorID=IsTutoring.tutorID left join Major on Tutor.majorID=Major.majorID where IsTutoring.studentID=" + StudentID;
+
+        String sql = "select Tutor.tutor_FName, Tutor.tutor_LName, Major.major_Name, Tutor.tutorID from Tutor inner join IsTutoring on Tutor.tutorID=IsTutoring.tutorID left join Major on Tutor.majorID=Major.majorID where IsTutoring.studentID=" + StudentID;
 
 
         DBOperator op = DBOperator.getInstance();
@@ -51,9 +53,9 @@ public class MyTutorsActivity extends AppCompatActivity {
 
         while(cursor.moveToNext()) {
             try {
-                MyTutorsList.add(new MyStudentsItem(cursor.getString(0) + " " + cursor.getString(1), cursor.getString(2)));
+                MyTutorsList.add(new MyTutorsItem(cursor.getString(0) + " " + cursor.getString(1), cursor.getString(2), cursor.getString(3)));
             } catch (Exception e) {
-                MyTutorsList.add(new MyStudentsItem(cursor.getString(0) + " " + cursor.getString(1), "None Listed"));
+                MyTutorsList.add(new MyTutorsItem(cursor.getString(0) + " " + cursor.getString(1), "None Listed", cursor.getString(3)));
             }
         }
 
@@ -67,10 +69,28 @@ public class MyTutorsActivity extends AppCompatActivity {
 
 
 
-        MyTutorsAdapter = new MyStudentsAdapter(MyTutorsList);
+        MyTutorsAdapter = new MyTutorsAdapter(MyTutorsList);
 
 
         MyTutorsRecyclerView.setAdapter(MyTutorsAdapter);
+
+        MyTutorsAdapter.setOnItemClickListener(new MyTutorsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                MyTutorsItem item = MyTutorsList.get(position);
+
+                Bundle extras = new Bundle();
+                extras.putString("StudentID", "null");
+                extras.putString("TutorID", item.getTutorID());
+
+                Intent i = new Intent(getBaseContext(), DisplayPersonActivity.class);
+                i.putExtras(extras);
+                startActivity(i);
+                finish();
+
+
+            }
+        });
 
     }
 

@@ -16,14 +16,38 @@ import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.R;
 
 public class TutorSearchAdapter extends RecyclerView.Adapter<TutorSearchAdapter.TutorSearchViewHolder>{
     private ArrayList<TutorSearchItem> TutorSearchList;
+    private OnItemClickListener TutorSearchListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        TutorSearchListener = listener;
+    }
 
     public static class TutorSearchViewHolder extends RecyclerView.ViewHolder {
         public TextView TutorNameView, MajorNameView;
 
-        public TutorSearchViewHolder(@NonNull View itemView) {
+        public TutorSearchViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             TutorNameView = itemView.findViewById(R.id.TutorSearchNameTextView);
-            MajorNameView = itemView.findViewById(R.id.TutorSeatchMajorNameTextView);
+            MajorNameView = itemView.findViewById(R.id.TutorSearchMajorNameTextView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+
+                    }
+
+                }
+            });
 
         }
     }
@@ -36,7 +60,7 @@ public class TutorSearchAdapter extends RecyclerView.Adapter<TutorSearchAdapter.
     @Override
     public TutorSearchViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tutor_search_item, viewGroup, false);
-        TutorSearchViewHolder msvh = new TutorSearchViewHolder(v);
+        TutorSearchViewHolder msvh = new TutorSearchViewHolder(v, TutorSearchListener);
         return msvh;
     }
 

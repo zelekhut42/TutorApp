@@ -25,7 +25,7 @@ import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.idObject;
 public class TutorSearchActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView TutorSearchRecyclerView;
-    private RecyclerView.Adapter TutorSearchAdapter;
+    private TutorSearchAdapter TutorSearchAdapter;
     private RecyclerView.LayoutManager TutorSearchLayoutManager;
     private ArrayList<TutorSearchItem> TutorSearchList = new ArrayList<>();
 
@@ -64,6 +64,24 @@ public class TutorSearchActivity extends AppCompatActivity implements View.OnCli
 
         TutorSearchRecyclerView.setAdapter(TutorSearchAdapter);
 
+        TutorSearchAdapter.setOnItemClickListener(new TutorSearchAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                TutorSearchItem item = TutorSearchList.get(position);
+
+                Bundle extras = new Bundle();
+                extras.putString("StudentID", "null");
+                extras.putString("TutorID", item.getTutorID());
+
+                Intent i = new Intent(getBaseContext(), DisplayPersonActivity.class);
+                i.putExtras(extras);
+                startActivity(i);
+                finish();
+
+
+            }
+        });
+
 
     }
 
@@ -81,7 +99,7 @@ public class TutorSearchActivity extends AppCompatActivity implements View.OnCli
 
             String enteredSearch = searchEditText.getText().toString();
 
-            String sql = "select Tutor.tutor_FName, Tutor.tutor_LName, Major.major_Name from Tutor inner join HasSkills on Tutor.tutorID=HasSkills.tutorID inner join SkillSet on HasSkills.skillID=SkillSet.skillID left join Major on Tutor.majorID=Major.majorID where SkillSet.skill_Name=" + "'" + enteredSearch + "'";
+            String sql = "select Tutor.tutor_FName, Tutor.tutor_LName, Major.major_Name, Tutor.tutorID from Tutor inner join HasSkills on Tutor.tutorID=HasSkills.tutorID inner join SkillSet on HasSkills.skillID=SkillSet.skillID left join Major on Tutor.majorID=Major.majorID where SkillSet.skill_Name=" + "'" + enteredSearch + "'";
 
             DBOperator op = DBOperator.getInstance();
 
@@ -91,7 +109,7 @@ public class TutorSearchActivity extends AppCompatActivity implements View.OnCli
 
 
             while(cursor.moveToNext()) {
-                TutorSearchList.add(new TutorSearchItem(cursor.getString(0) + " " +cursor.getString(1), cursor.getString(2)));
+                TutorSearchList.add(new TutorSearchItem(cursor.getString(0) + " " +cursor.getString(1), cursor.getString(2), cursor.getString(3)));
             }
 
 

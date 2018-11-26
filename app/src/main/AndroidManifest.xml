@@ -37,6 +37,11 @@
             android:name=".MyTutorsActivity"
             android:label="@string/title_activity_my_tutors"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DisplayPersonActivity"
+            android:label="@string/title_activity_display_person"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".DisplaySkillActivity"></activity>
     </application>
 
 </manifest>
