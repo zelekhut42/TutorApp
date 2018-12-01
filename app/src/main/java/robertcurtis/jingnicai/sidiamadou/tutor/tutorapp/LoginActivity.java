@@ -12,7 +12,7 @@ import android.database.Cursor;
 import android.widget.Toast;
 import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.idObject;
 
-public class TutorActivity extends AppCompatActivity implements OnClickListener {
+public class LoginActivity extends AppCompatActivity implements OnClickListener {
 
     Button LoginBtn;
     EditText Username,Password;
@@ -20,7 +20,7 @@ public class TutorActivity extends AppCompatActivity implements OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor);
+        setContentView(R.layout.activity_login);
         LoginBtn = this.findViewById(R.id.LoginButton);
         LoginBtn.setOnClickListener(this);
         Username = this.findViewById(R.id.LoginUsername);

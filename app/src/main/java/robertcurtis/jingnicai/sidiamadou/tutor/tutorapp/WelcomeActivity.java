@@ -4,38 +4,39 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-
 
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
     Button login_button;
+    Button signup_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        //Remove title bar
-//        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//
-//        //Remove notification bar
-//        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//
-//        //set content view AFTER ABOVE sequence (to avoid crash)
-//        this.setContentView(R.layout.activity_welcome);
-
 
         setContentView(R.layout.activity_welcome);
         login_button = this.findViewById(R.id.go_to_login_button);
         login_button.setOnClickListener(this);
 
+        signup_button = this.findViewById(R.id.go_to_sign_up_button);
+        signup_button.setOnClickListener(this);
+
     }
 
 
     public void onClick(View v) {
+         //todo: check initial state to avoid make choice, send you to the the landing page
 
-        Intent i = new Intent(this, TutorActivity.class);
+        int id = v.getId();
+        Intent i;
+        if (id == R.id.go_to_login_button) {
+            i = new Intent(this, LoginActivity.class);
+        } else if (id == R.id.go_to_sign_up_button) {
+            i = new Intent(this, SignUpActivity.class);
+        } else {
+            i = new Intent(this, LoginActivity.class);
+        }
         this.startActivity(i);
         finish();
 
