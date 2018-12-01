@@ -30,4 +30,7 @@
     <string name="MajorTextView">Major:</string>
     <string name="DisplaySkillName">Skill Name:</string>
     <string name="DisplaySkillDescription">Skill Description:</string>string>
+    <string name="welcome_to_login">Login</string>
+    <string name="welcome_to_sign_up">Sign Up</string>
+
 </resources>
