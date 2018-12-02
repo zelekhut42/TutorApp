@@ -1,5 +1,6 @@
 package robertcurtis.jingnicai.sidiamadou.tutor.tutorapp;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,8 +21,9 @@ import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.WantedSkillsAdapter
 public class WantedSkillsFragment extends Fragment {
     private static final String TAG = "WantedSkillsFragment";
     private RecyclerView WantedSkillsRecyclerView;
-    private RecyclerView.Adapter WantedSkillsAdapter;
+    private WantedSkillsAdapter WantedSkillsAdapter;
     private RecyclerView.LayoutManager WantedSkillsLayoutManager;
+    private ArrayList<WantedSkillsItem> WantedSkillList = new ArrayList<>();
 
     private String StudentID;
 
@@ -29,17 +31,16 @@ public class WantedSkillsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ArrayList<WantedSkillsItem> WantedSkillList = new ArrayList<>();
         String sql;
 
 
-        sql = "select SkillSet.skill_Name From SkillSet inner join WantSkill on SkillSet.skillID=WantSkill.skillID where WantSkill.studentID=" + StudentID;
+        sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet inner join WantSkill on SkillSet.skillID=WantSkill.skillID where WantSkill.studentID=" + StudentID;
 
 
         Cursor cursor = DBOperator.getInstance().execQuery(sql);
 
         while(cursor.moveToNext()) {
-            WantedSkillList.add(new WantedSkillsItem(cursor.getString(0)));
+            WantedSkillList.add(new WantedSkillsItem(cursor.getString(0), cursor.getString(1)));
         }
 
         View view = inflater.inflate(R.layout.wanted_skills_fragment, container, false);
@@ -51,6 +52,25 @@ public class WantedSkillsFragment extends Fragment {
 
         WantedSkillsRecyclerView.setLayoutManager(WantedSkillsLayoutManager);
         WantedSkillsRecyclerView.setAdapter(WantedSkillsAdapter);
+
+        WantedSkillsAdapter.setOnItemClickListener(new WantedSkillsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                WantedSkillsItem item = WantedSkillList.get(position);
+
+                Bundle extras = new Bundle();
+                extras.putString("SkillID", item.getSkillID());
+
+
+                Intent i = new Intent(getActivity(), DisplaySkillActivity.class);
+
+                i.putExtras(extras);
+                startActivity(i);
+
+
+
+            }
+        });
 
        return view;
     }

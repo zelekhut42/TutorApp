@@ -1,34 +1,35 @@
 package robertcurtis.jingnicai.sidiamadou.tutor.tutorapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.DBOperator;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.database.Cursor;
 import android.widget.Toast;
+
+import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.DBOperator;
 import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.idObject;
 
-public class TutorActivity extends AppCompatActivity implements OnClickListener {
+public class LoginActivity extends AppCompatActivity implements OnClickListener {
 
     Button LoginBtn;
-    EditText Username,Password;
+    EditText Username, Password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor);
+        setContentView(R.layout.activity_login);
         LoginBtn = this.findViewById(R.id.LoginButton);
         LoginBtn.setOnClickListener(this);
         Username = this.findViewById(R.id.LoginUsername);
         Password = this.findViewById(R.id.LoginPassword);
 
-        try{
+        try {
             DBOperator.copyDB(getBaseContext());
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -40,31 +41,31 @@ public class TutorActivity extends AppCompatActivity implements OnClickListener 
      */
 
 
-    public void onClick(View v)
-    {
-        int id=v.getId();
-        if(id==R.id.LoginButton) {
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.LoginButton) {
             String enteredUsername = Username.getText().toString();
             String enteredPassword = Password.getText().toString();
             String sql = "select loginID from Login where username = '" + enteredUsername + "' and password = '" + enteredPassword + "'";
 
-            DBOperator  op = DBOperator.getInstance();
-
+            DBOperator op = DBOperator.getInstance();
 
 
             Cursor cursor = op.execQuery(sql);
 
-            String userID = "null";
+            String userID = null;
 
-            while (cursor.moveToNext()) {
-                userID = cursor.getString(0);
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    userID = cursor.getString(0);
+                    cursor.moveToNext();
+                }
             }
 
 
-
-            if (userID == "null") {
+            if (userID == null) {
                 Toast.makeText(this, "error loggin in", Toast.LENGTH_SHORT).show();
-            } else{
+            } else {
                 idObject idobject = new idObject();
                 idobject.idObject(userID);
                 Bundle extras = new Bundle();

@@ -19,8 +19,9 @@ import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.MyStudentsAdapter;
 public class MyStudentsActivity extends AppCompatActivity {
 
     private RecyclerView MyStudentsRecyclerView;
-    private RecyclerView.Adapter MyStudentsAdapter;
+    private MyStudentsAdapter MyStudentsAdapter;
     private RecyclerView.LayoutManager MyStudentsLayoutManager;
+    private ArrayList<MyStudentsItem> MyStudentsList = new ArrayList<>();
 
     private String StudentID;
     private String TutorID;
@@ -39,9 +40,9 @@ public class MyStudentsActivity extends AppCompatActivity {
 
 
 
-        ArrayList<MyStudentsItem> MyStudentsList = new ArrayList<>();
 
-        String sql = "select Student.student_FName, Student.student_LName, Major.major_Name from Student inner join IsTutoring on Student.studentID=IsTutoring.studentID left join Major on Student.majorID=Major.majorID where IsTutoring.tutorID=" + TutorID;
+
+        String sql = "select Student.student_FName, Student.student_LName, Major.major_Name, Student.studentID from Student inner join IsTutoring on Student.studentID=IsTutoring.studentID left join Major on Student.majorID=Major.majorID where IsTutoring.tutorID=" + TutorID;
 
 
         DBOperator op = DBOperator.getInstance();
@@ -53,9 +54,9 @@ public class MyStudentsActivity extends AppCompatActivity {
 
         while(cursor.moveToNext()) {
             try {
-                MyStudentsList.add(new MyStudentsItem(cursor.getString(0) + " " + cursor.getString(1), cursor.getString(2)));
+                MyStudentsList.add(new MyStudentsItem(cursor.getString(0) + " " + cursor.getString(1), cursor.getString(2), cursor.getString(3)));
             } catch (Exception e) {
-                MyStudentsList.add(new MyStudentsItem(cursor.getString(0) + " " + cursor.getString(1), "None Listed"));
+                MyStudentsList.add(new MyStudentsItem(cursor.getString(0) + " " + cursor.getString(1), "None Listed", cursor.getString(3)));
             }
         }
 
@@ -73,6 +74,24 @@ public class MyStudentsActivity extends AppCompatActivity {
 
 
         MyStudentsRecyclerView.setAdapter(MyStudentsAdapter);
+
+        MyStudentsAdapter.setOnItemClickListener(new MyStudentsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                MyStudentsItem item = MyStudentsList.get(position);
+
+                Bundle extras = new Bundle();
+                extras.putString("StudentID", item.getStudentID());
+                extras.putString("TutorID", "null");
+
+                Intent i = new Intent(getBaseContext(), DisplayPersonActivity.class);
+                i.putExtras(extras);
+                startActivity(i);
+                finish();
+
+
+            }
+        });
     }
 
 }

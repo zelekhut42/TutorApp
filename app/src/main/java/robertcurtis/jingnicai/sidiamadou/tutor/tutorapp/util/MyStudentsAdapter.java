@@ -16,14 +16,38 @@ import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.R;
 public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.MyStudentsViewHolder> {
 
     private ArrayList<MyStudentsItem> MyStudentsList;
+    private OnItemClickListener MyStudentsListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        MyStudentsListener = listener;
+    }
 
     public static class MyStudentsViewHolder extends RecyclerView.ViewHolder {
         public TextView StudentNameView, StudentMajorView;
 
-        public MyStudentsViewHolder(@NonNull View itemView) {
+        public MyStudentsViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             StudentNameView = itemView.findViewById(R.id.MyStudentsNameTextView);
             StudentMajorView = itemView.findViewById(R.id.MyStudentsMajorNameTextView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+
+                    }
+
+                }
+            });
 
         }
     }
@@ -36,7 +60,7 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.My
     @Override
     public MyStudentsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_students_item, viewGroup, false);
-        MyStudentsViewHolder msvh = new MyStudentsViewHolder(v);
+        MyStudentsViewHolder msvh = new MyStudentsViewHolder(v, MyStudentsListener);
         return msvh;
     }
 

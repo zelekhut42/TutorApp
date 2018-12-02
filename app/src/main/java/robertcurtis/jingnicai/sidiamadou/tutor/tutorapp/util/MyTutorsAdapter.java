@@ -17,14 +17,38 @@ import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.R;
 public class MyTutorsAdapter extends RecyclerView.Adapter<MyTutorsAdapter.MyTutorsViewHolder>{
 
     private ArrayList<MyTutorsItem> MyTutorsList;
+    private OnItemClickListener MyTutorListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        MyTutorListener = listener;
+    }
 
     public static class MyTutorsViewHolder extends RecyclerView.ViewHolder {
         public TextView TutorNameView, TutorMajorView;
 
-        public MyTutorsViewHolder(@NonNull View itemView) {
+        public MyTutorsViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             TutorNameView = itemView.findViewById(R.id.MyTutorsNameTextView);
             TutorMajorView = itemView.findViewById(R.id.MyTutorsMajorNameTextView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+
+                    }
+
+                }
+            });
 
         }
     }
@@ -37,7 +61,7 @@ public class MyTutorsAdapter extends RecyclerView.Adapter<MyTutorsAdapter.MyTuto
     @Override
     public MyTutorsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_tutors_item, viewGroup, false);
-        MyTutorsViewHolder msvh = new MyTutorsViewHolder(v);
+        MyTutorsViewHolder msvh = new MyTutorsViewHolder(v, MyTutorListener);
         return msvh;
     }
 

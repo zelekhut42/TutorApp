@@ -19,8 +19,38 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
+    <!-- Sign up page text -->
+    <string name="hint_username">User Name</string>
+    <string name="hint_email">Email address</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_password2nd">Confirm password</string>
+    <string name="hint_firstname">First Name</string>
+    <string name="hint_lastname">Last Name</string>
+    <string name="hint_phonenumber">Phone number</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="TutorSearchHintText">Enter Skill</string>
     <string name="TutorSkillSearchButtonText">Search For Tutor</string>
+    <string name="StudentSkillsSearchButton">Search For Student</string>
+    <string name="StudentSearchTextHint">Enter Skill</string>
+    <string name="title_activity_display_person">DisplayPersonActivity</string>
+    <string name="NameTextViewe">Name:</string>
+    <string name="EmailTextView">Email Address:</string>
+    <string name="TelephoneTextView">Telephone Number:</string>
+    <string name="MajorTextView">Major:</string>
+    <string name="DisplaySkillName">Skill Name:</string>
+    <string name="DisplaySkillDescription">Skill Description:</string>string>
+
+    <!-- Welcome page text  -->
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+
+    <!-- Logo description -->
+    <string name="logo_description">Logo description</string>
+
+    <!-- Personal info -->
+    <string name="personal_info_textview">Tell us more about you!</string>
+    <string name="continue_button">Continue</string>
+
 </resources>
