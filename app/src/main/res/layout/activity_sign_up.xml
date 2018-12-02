@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fitsSystemWindows="true">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+    <ImageView
+        android:layout_width="145dp"
+        android:layout_height="145dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/logo_description"
+        android:src="@drawable/logo" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="@string/logo_description"
-            android:src="@drawable/logo" />
         <!-- UserName-->
         <EditText
             android:id="@+id/signup_input_username"
@@ -30,6 +28,7 @@
             android:hint="@string/hint_username"
             android:inputType="textNoSuggestions"
             android:importantForAutofill="no" tools:targetApi="o"/>
+
         <!--Email-->
         <EditText
             android:id="@+id/signup_input_email"
@@ -40,6 +39,7 @@
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:importantForAutofill="no" tools:targetApi="o"/>
+
         <!-- Password-->
         <EditText
             android:id="@+id/signup_input_password"
@@ -49,6 +49,7 @@
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:importantForAutofill="no" tools:targetApi="o"/>
+
         <!-- Password Re-enter-->
         <EditText
             android:id="@+id/signup_input_reEnterPassword"
@@ -59,20 +60,12 @@
             android:inputType="textPassword"
             android:importantForAutofill="no" tools:targetApi="o"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        <Button
+            android:id="@+id/signup_register"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:text="@string/sign_up" />
 
-            <Button
-                android:id="@+id/signup_register"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="@string/sign_up" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

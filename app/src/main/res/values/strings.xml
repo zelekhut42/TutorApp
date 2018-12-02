@@ -52,5 +52,6 @@
     <!-- Personal info -->
     <string name="personal_info_textview">Tell us more about you!</string>
     <string name="continue_button">Continue</string>
+    <string name="major_pick">Major:</string>
 
 </resources>
