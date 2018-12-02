@@ -39,6 +39,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
         input_telphone = this.findViewById(R.id.signup_input_phonenumber);
         input_telphone.setOnClickListener(this);
 
+        input_major = findViewById(R.id.signup_major);
 
         try {
             DBOperator.copyDB(getBaseContext());
@@ -46,13 +47,12 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
             e.printStackTrace();
         }
 
-        SearchableSpinner searchableSpinner = (SearchableSpinner) findViewById(R.id.signup_major);
         ArrayList<String> marjor_list = get_majors();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter(PersonalInfoActivity.this, android.R.layout.simple_spinner_dropdown_item, marjor_list);
-        searchableSpinner.setAdapter(arrayAdapter);
 
-        searchableSpinner.setTitle("Select Item");
-        searchableSpinner.setPositiveButton("OK");
+        input_major.setAdapter(arrayAdapter);
+        input_major.setTitle("Select Item");
+        input_major.setPositiveButton("OK");
     }
 
 
@@ -77,7 +77,7 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
             }
         }
 
-        String insert_sql = "insert into Student (student_FName, student_LName, student_Email, student_tel, majorID, loginID) values ('%s', '%s', '%s', '%s', %i, %i)";
+        String insert_sql = "insert into Student (student_FName, student_LName, student_Email, student_tel, majorID, loginID) values ('%s', '%s', '%s', '%s', %d, %d)";
         insert_sql = String.format(insert_sql, firstname, lastname, email, telephone, Integer.valueOf(major_id), Integer.valueOf(login_id));
 
         try {
