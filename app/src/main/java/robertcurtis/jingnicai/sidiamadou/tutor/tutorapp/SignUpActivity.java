@@ -68,18 +68,35 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String name = input_name.getText().toString();
         String email = input_email.getText().toString();
         String password = input_pw.getText().toString();
-        String reEnterPassword = input_pw2.getText().toString();
 
         // TODO: Implement your own signup logic here.
 
         try {
+            // insert new row
             DBOperator op = DBOperator.getInstance();
             String insert_login_sql = " insert into Login (username, password) values ('%s', %s)";
             insert_login_sql = String.format(insert_login_sql, name, password);
             op.execSQL(insert_login_sql);
+
+            // get new login id
+            String get_login_id = " select loginID from Login where username = '%s' ";
+            get_login_id = String.format(get_login_id, name);
+            Cursor login_id_cursor = op.execQuery(get_login_id);
+
+            String login_id = null;
+            if (login_id_cursor.moveToFirst()) {
+                if (!login_id_cursor.isAfterLast()) {
+                    login_id = login_id_cursor.getString(0);
+                }
+            }
+
             progressDialog.dismiss();
             Intent i;
-            i = new Intent(this, LandingPageActivity.class);
+            i = new Intent(this, PersonalInfoActivity.class);
+            i.putExtra("REGISTER_EMAIL", email);
+            if (login_id != null) {
+                i.putExtra("REGISTER_LOGIN_ID", login_id);
+            }
             this.startActivity(i);
             finish();
         } catch (Exception e) {
@@ -139,9 +156,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             input_pw2.setError(null);
         }
 
+        DBOperator op = DBOperator.getInstance();
+
         String username_sql = "select username, student_Email from Login, Student where Login.loginID = Student.loginID and username = '%s'";
         username_sql = String.format(username_sql, name);
-        DBOperator op = DBOperator.getInstance();
         Cursor username_cursor = op.execQuery(username_sql);
 
         if (username_cursor.getCount() != 0) {

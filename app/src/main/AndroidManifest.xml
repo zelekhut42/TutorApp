@@ -26,6 +26,11 @@
             android:name=".SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
+        <!-- sign up personal info page -->
+        <activity
+            android:name=".PersonalInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
 
         <!-- login page -->
         <activity

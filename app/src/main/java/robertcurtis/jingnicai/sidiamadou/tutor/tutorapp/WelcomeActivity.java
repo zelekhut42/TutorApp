@@ -26,7 +26,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
 
 
     public void onClick(View v) {
-         //todo: check initial state to avoid make choice, send you to the the landing page
+        //todo: check initial state to avoid make choice, send you to the the landing page
 
         int id = v.getId();
         Intent i;

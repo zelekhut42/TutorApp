@@ -26,6 +26,7 @@
     <string name="hint_password2nd">Confirm password</string>
     <string name="hint_firstname">First Name</string>
     <string name="hint_lastname">Last Name</string>
+    <string name="hint_phonenumber">Phone number</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -47,4 +48,9 @@
 
     <!-- Logo description -->
     <string name="logo_description">Logo description</string>
+
+    <!-- Personal info -->
+    <string name="personal_info_textview">Tell us more about you!</string>
+    <string name="continue_button">Continue</string>
+
 </resources>
