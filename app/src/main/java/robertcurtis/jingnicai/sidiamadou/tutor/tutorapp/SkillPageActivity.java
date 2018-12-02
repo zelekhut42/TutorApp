@@ -40,7 +40,7 @@ public class SkillPageActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: Starting.");
 
-        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+        //mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
         mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
@@ -59,12 +59,20 @@ public class SkillPageActivity extends AppCompatActivity {
         msfrag.addIDs(extras.getString("StudentID"), extras.getString("TutorID"));
 
         adapter.addFragment(msfrag, "MySkills");
+
+        WantedSkillsFragment wsfrag = new WantedSkillsFragment();
+        wsfrag.addID(extras.getString("StudentID"));
+
         if(!"null".equals(extras.getString("StudentID"))) {
-            WantedSkillsFragment wsfrag = new WantedSkillsFragment();
-            wsfrag.addID(extras.getString("StudentID"));
+
             adapter.addFragment(wsfrag, "WantedSkills");
         }
-        adapter.addFragment(new AllSkillsFragment(), "AllSkils");
+
+        AllSkillsFragment asfrag = new AllSkillsFragment();
+        asfrag.addIDs(extras.getString("StudentID"), extras.getString("TutorID"));
+        adapter.addFragment(asfrag, "AllSkills");
+
+
 
         viewPager.setAdapter(adapter);
     }

@@ -117,11 +117,40 @@ public class StudentSearchActivity extends AppCompatActivity implements View.OnC
 
                     DBOperator.getInstance().execSQL(sql);
 
+                    String removeSQL = "delete from WantSkill where studentID=" + item.getStudentID() + " and skillID=" + skillID;
+
+                    DBOperator.getInstance().execSQL(removeSQL);
+
+                    item.setButtonType("remove");
+
+                    StudentSearchAdapter.notifyItemChanged(position);
 
                     Toast.makeText(getBaseContext(), "position= " + Integer.toString(position) + " SQL Complete", Toast.LENGTH_SHORT).show();
 
 
+
                 } else if (item.getButtonType().equals("remove")) {
+                    String skillSQL = "select skillID from SkillSet where skill_Name=" + "'" + enteredSearch + "'";
+
+                    DBOperator op = DBOperator.getInstance();
+
+                    Cursor cSkillID = op.execQuery(skillSQL);
+
+                    String skillID = "";
+
+                    while(cSkillID.moveToNext()) {
+                        skillID = cSkillID.getString(0);
+                    }
+
+                    String removeSQL = "delete from IsTutoring where tutorID=" + TutorID + " and studentID=" + item.getStudentID() + "and skillID=" + skillID + ";";
+
+                    DBOperator.getInstance().execSQL(removeSQL);
+
+                    item.setButtonType("add");
+
+                    StudentSearchAdapter.notifyItemChanged(position);
+
+
                     Toast.makeText(getBaseContext(), "position=" + Integer.toString(position), Toast.LENGTH_SHORT).show();
                 }
 

@@ -36,4 +36,8 @@ public class StudentSearchItem {
     public String getStudentID() {
         return StudentID;
     }
+
+    public void setButtonType(String buttonType) {
+        ButtonType = buttonType;
+    }
 }

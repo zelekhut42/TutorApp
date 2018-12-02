@@ -1,5 +1,6 @@
 package robertcurtis.jingnicai.sidiamadou.tutor.tutorapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,8 @@ public class WantedSkillsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        WantedSkillList.clear();
 
         String sql;
 
@@ -73,6 +77,55 @@ public class WantedSkillsFragment extends Fragment {
         });
 
        return view;
+    }
+
+    @Override
+    public void onResume() {
+
+        WantedSkillList.clear();
+
+        String sql;
+
+
+        sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet inner join WantSkill on SkillSet.skillID=WantSkill.skillID where WantSkill.studentID=" + StudentID;
+
+
+        Cursor cursor = DBOperator.getInstance().execQuery(sql);
+
+        while(cursor.moveToNext()) {
+            WantedSkillList.add(new WantedSkillsItem(cursor.getString(0), cursor.getString(1)));
+        }
+
+        WantedSkillsAdapter.notifyDataSetChanged();
+
+        super.onResume();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+
+        if (getView() != null) {
+            WantedSkillList.clear();
+
+            String sql;
+
+
+            sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet inner join WantSkill on SkillSet.skillID=WantSkill.skillID where WantSkill.studentID=" + StudentID;
+
+
+            Cursor cursor = DBOperator.getInstance().execQuery(sql);
+
+            while(cursor.moveToNext()) {
+                WantedSkillList.add(new WantedSkillsItem(cursor.getString(0), cursor.getString(1)));
+            }
+
+            WantedSkillsAdapter.notifyDataSetChanged();
+
+        }
+
+
+
+        super.setUserVisibleHint(isVisibleToUser);
     }
 
     public void addID(String studentID) {
