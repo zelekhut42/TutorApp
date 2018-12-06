@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+    <ImageView
+        android:layout_width="145dp"
+        android:layout_height="145dp"
+        android:layout_gravity="center_horizontal"
+
+
+        android:contentDescription="@string/logo_description"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/personal_info_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/personal_info_textview"
+        android:textColor="#008577"
+        android:textSize="18sp"/>
+
+
+    <!-- First Name-->
+    <EditText
+        android:id="@+id/signup_input_firstname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="@string/hint_firstname"
+        android:inputType="textPersonName"/>
+
+    <!-- Last Name-->
+    <EditText
+        android:id="@+id/signup_input_lastname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="@string/hint_lastname"
+        android:inputType="textPersonName"/>
+
+    <!-- Phone Number-->
+    <EditText
+        android:id="@+id/signup_input_phonenumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="@string/hint_phonenumber"
+        android:inputType="phone"/>
+
+    <TextView
+        android:id="@+id/textview_pick_major"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/major_pick"
+        android:textColor="#008577"
+        android:textSize="16sp"/>
+
+    <!--Major - Searchable Spinner-->
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/signup_major"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/complete_info_button"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:text="@string/continue_button" />
+</LinearLayout>
