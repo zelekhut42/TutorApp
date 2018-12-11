@@ -34,9 +34,11 @@ public class MySkillsFragment extends Fragment {
 
 
         String sql;
+        String ButtonType = "none";
 
         if(!"null".equals(TutorID)) {
             sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet inner join HasSkills on SkillSet.skillID=HasSkills.skillID where HasSkills.tutorID=" + TutorID;
+            ButtonType = "remove";
         } else {
             sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet inner join IsTutoring on SkillSet.skillID=IsTutoring.skillID where IsTutoring.StudentHasPassed=1 and IsTutoring.studentID=" + StudentID;
         }
@@ -44,7 +46,7 @@ public class MySkillsFragment extends Fragment {
         Cursor cursor = DBOperator.getInstance().execQuery(sql);
 
         while(cursor.moveToNext()) {
-            MySkillList.add(new MySkillsItem(cursor.getString(0), cursor.getString(1)));
+            MySkillList.add(new MySkillsItem(cursor.getString(0), cursor.getString(1), ButtonType));
         }
         View view = inflater.inflate(R.layout.my_skills_fragment, container, false);
         MySkillsRecyclerView = view.findViewById(R.id.MySkillsRecyclerView);
@@ -72,10 +74,60 @@ public class MySkillsFragment extends Fragment {
 
 
             }
+
+            @Override
+            public void onRemoveSkillClick(int position) {
+                MySkillsItem item = MySkillList.get(position);
+                String currentButtonType = item.getHaveButtonType();
+
+                if (currentButtonType.equals("remove")) {
+
+                    String sql = "delete from HasSkills where tutorID=" + TutorID + " and skillID=" + item.getSkillID() + ";";
+
+                    DBOperator.getInstance().execSQL(sql);
+                    MySkillList.remove(position);
+
+                    MySkillsAdapter.notifyItemRemoved(position);
+
+                } else if (currentButtonType.equals("none")) {
+                    onItemClick(position);
+                }
+            }
         });
 
 
         return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+
+        if (getView() != null) {
+            MySkillList.clear();
+
+
+
+            String sql;
+            String ButtonType = "none";
+
+            if(!"null".equals(TutorID)) {
+                sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet inner join HasSkills on SkillSet.skillID=HasSkills.skillID where HasSkills.tutorID=" + TutorID;
+                ButtonType = "remove";
+            } else {
+                sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet inner join IsTutoring on SkillSet.skillID=IsTutoring.skillID where IsTutoring.StudentHasPassed=1 and IsTutoring.studentID=" + StudentID;
+            }
+
+            Cursor cursor = DBOperator.getInstance().execQuery(sql);
+
+            while(cursor.moveToNext()) {
+                MySkillList.add(new MySkillsItem(cursor.getString(0), cursor.getString(1), ButtonType));
+            }
+
+            MySkillsAdapter.notifyDataSetChanged();
+
+        }
+
+        super.setUserVisibleHint(isVisibleToUser);
     }
 
     public void addIDs(String studentID, String tutorID) {

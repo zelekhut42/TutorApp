@@ -74,32 +74,25 @@ public class WantedSkillsFragment extends Fragment {
 
 
             }
+
+            @Override
+            public void onRemoveWantedSkillClick(int position) {
+                WantedSkillsItem item = WantedSkillList.get(position);
+
+                String sql = "delete from WantSkill where studentID=" + StudentID + " and skillID=" + item.getSkillID() + ";";
+
+                DBOperator.getInstance().execSQL(sql);
+
+                WantedSkillList.remove(position);
+
+
+                WantedSkillsAdapter.notifyItemRemoved(position);
+            }
         });
 
        return view;
     }
 
-    @Override
-    public void onResume() {
-
-        WantedSkillList.clear();
-
-        String sql;
-
-
-        sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet inner join WantSkill on SkillSet.skillID=WantSkill.skillID where WantSkill.studentID=" + StudentID;
-
-
-        Cursor cursor = DBOperator.getInstance().execQuery(sql);
-
-        while(cursor.moveToNext()) {
-            WantedSkillList.add(new WantedSkillsItem(cursor.getString(0), cursor.getString(1)));
-        }
-
-        WantedSkillsAdapter.notifyDataSetChanged();
-
-        super.onResume();
-    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

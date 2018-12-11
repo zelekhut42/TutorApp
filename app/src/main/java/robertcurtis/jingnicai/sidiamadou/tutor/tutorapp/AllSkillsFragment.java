@@ -189,6 +189,86 @@ public class AllSkillsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+
+        if (getView() != null) {
+           AllSkillList.clear();
+
+
+
+            AllSkillList.clear();
+
+            ArrayList<String> wantedSkills = new ArrayList<>();
+
+            if (!"null".equals(StudentID)) {
+                String wantedSkillsSQL = "select SkillSet.skillID From SkillSet inner join WantSkill on SkillSet.skillID=WantSkill.skillID where WantSkill.studentID=" + StudentID;
+
+                Cursor wantedC = DBOperator.getInstance().execQuery(wantedSkillsSQL);
+
+                while (wantedC.moveToNext()) {
+                    wantedSkills.add(wantedC.getString(0));
+                }
+            }
+
+            ArrayList<String> mySkills = new ArrayList<>();
+
+            if (!"null".equals(TutorID)) {
+                String mySkillsSQL = "select SkillSet.skillID From SkillSet inner join HasSkills on SkillSet.skillID=HasSkills.skillID where HasSkills.tutorID=" + TutorID;
+
+                Cursor myC = DBOperator.getInstance().execQuery(mySkillsSQL);
+
+                while (myC.moveToNext()) {
+                    mySkills.add(myC.getString(0));
+                }
+            }
+
+
+            String sql;
+
+
+            sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet" ;
+
+
+            Cursor cursor = DBOperator.getInstance().execQuery(sql);
+
+            while(cursor.moveToNext()) {
+                String skillID = cursor.getString(1);
+                String MySkillsButtonType = "none";
+                String WantedSkillsButtonType = "none";
+
+                if (!TutorID.equals("null")) {
+
+                    if(mySkills.contains(skillID)) {
+                        MySkillsButtonType = "remove";
+                    } else {
+                        MySkillsButtonType = "add";
+                    }
+
+                }
+
+                if (!StudentID.equals("null")) {
+
+                    if(wantedSkills.contains(skillID)) {
+                        WantedSkillsButtonType = "remove";
+                    } else {
+                        WantedSkillsButtonType = "add";
+                    }
+
+                }
+
+
+
+                AllSkillList.add(new AllSkillsItem(cursor.getString(0), skillID, WantedSkillsButtonType, MySkillsButtonType));
+            }
+
+            AllSkillsAdapter.notifyDataSetChanged();
+
+        }
+
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
     public void addIDs(String studentID, String tutorID) {
         StudentID = studentID;
         TutorID = tutorID;

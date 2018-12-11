@@ -6,12 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".DisplaySkillActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarDisplaySkill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarDisplaySkill"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="1"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="@string/app_name">
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
     <TextView
         android:id="@+id/SkillNameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/DisplaySkillName"
         android:textStyle="bold"
+        android:layout_marginTop="56dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

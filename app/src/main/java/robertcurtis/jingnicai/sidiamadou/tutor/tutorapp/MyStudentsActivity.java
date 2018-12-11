@@ -42,7 +42,7 @@ public class MyStudentsActivity extends AppCompatActivity {
 
 
 
-        String sql = "select Student.student_FName, Student.student_LName, Major.major_Name, Student.studentID from Student inner join IsTutoring on Student.studentID=IsTutoring.studentID left join Major on Student.majorID=Major.majorID where IsTutoring.tutorID=" + TutorID;
+        String sql = "select Student.student_FName, Student.student_LName, Major.major_Name, Student.studentID, SkillSet.skillID, SkillSet.skill_Name, IsTutoring.StudentHasPassed from Student inner join IsTutoring on Student.studentID=IsTutoring.studentID inner join SkillSet on IsTutoring.skillID=SkillSet.skillID left join Major on Student.majorID=Major.majorID where IsTutoring.tutorID=" + TutorID + ";";
 
 
         DBOperator op = DBOperator.getInstance();
@@ -53,10 +53,17 @@ public class MyStudentsActivity extends AppCompatActivity {
 
 
         while(cursor.moveToNext()) {
-            try {
-                MyStudentsList.add(new MyStudentsItem(cursor.getString(0) + " " + cursor.getString(1), cursor.getString(2), cursor.getString(3)));
-            } catch (Exception e) {
-                MyStudentsList.add(new MyStudentsItem(cursor.getString(0) + " " + cursor.getString(1), "None Listed", cursor.getString(3)));
+            String hasPassed = cursor.getString(6);
+
+            if(hasPassed.equals("0")) {
+
+                try {
+                    MyStudentsList.add(new MyStudentsItem(cursor.getString(0) + " " + cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getColumnName(4), cursor.getString(5)));
+                } catch (Exception e) {
+                    MyStudentsList.add(new MyStudentsItem(cursor.getString(0) + " " + cursor.getString(1), "None Listed", cursor.getString(3), cursor.getColumnName(4), cursor.getString(5)));
+                }
+            } else {
+                //do nothing
             }
         }
 
@@ -88,6 +95,35 @@ public class MyStudentsActivity extends AppCompatActivity {
                 i.putExtras(extras);
                 startActivity(i);
                 finish();
+
+
+            }
+
+            @Override
+            public void onRemoveStudentClick(int position) {
+                MyStudentsItem item = MyStudentsList.get(position);
+
+                String removeSQL = "delete from IsTutoring where tutorID=" + TutorID + " and studentID=" + item.getStudentID() + " and skillID=" + item.getSkillID() + ";";
+
+                DBOperator.getInstance().execSQL(removeSQL);
+
+                MyStudentsList.remove(position);
+
+                MyStudentsAdapter.notifyItemRemoved(position);
+            }
+
+            @Override
+            public void onGraduateStudentClick(int position) {
+                MyStudentsItem item = MyStudentsList.get(position);
+
+                String updateSQL = "update IsTutoring set StudentHasPassed=1 where tutorID=" + TutorID + " and studentID=" + item.getStudentID() + " and skillID=" + item.getSkillID() + ";";
+
+                MyStudentsList.remove(position);
+
+                MyStudentsAdapter.notifyItemRemoved(position);
+
+                DBOperator.getInstance().execSQL(updateSQL);
+
 
 
             }
