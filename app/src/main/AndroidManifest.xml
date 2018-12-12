@@ -24,70 +24,73 @@
         <!-- sign up page -->
         <activity
             android:name=".SignUpActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- sign up personal info page -->
         <activity
             android:name=".PersonalInfoActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- login page -->
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
 
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <!-- main page -->
         <activity
             android:name=".LandingPageActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <!-- skill -->
         <activity
             android:name=".SkillPageActivity"
             android:label="@string/title_activity_skill_page"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- tutor search -->
         <activity
             android:name=".TutorSearchActivity"
             android:label="@string/title_activity_tutor_search"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- student search -->
         <activity
             android:name=".StudentSearchActivity"
             android:label="@string/title_activity_student_search"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- my student -->
         <activity
             android:name=".MyStudentsActivity"
             android:label="@string/title_activity_my_students"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- my tutor -->
         <activity
             android:name=".MyTutorsActivity"
             android:label="@string/title_activity_my_tutors"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- person -->
         <activity
             android:name=".DisplayPersonActivity"
             android:label="@string/title_activity_display_person"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- activity -->
-        <activity android:name=".DisplaySkillActivity"></activity>
+        <activity android:name=".DisplaySkillActivity" />
+        <activity
+            android:name=".TryActivity"
+            android:label="@string/title_activity_try"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

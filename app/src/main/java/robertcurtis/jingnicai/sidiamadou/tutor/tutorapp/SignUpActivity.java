@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,13 +52,36 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            onBackPressed();
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        //this is only needed if you have specific things
+        //that you want to do when the user presses the back button.
+        /* your specific things...*/
+        Intent myIntent = new Intent(this, WelcomeActivity.class);
+        myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+        startActivity(myIntent);
+        finish();
+    }
+
     public void onClick(View v) {
         // check validate state
         if (!validate()) {
             onSignupFailed();
-            return;
+        } else {
+            onSignupSuccess();
         }
 
+    }
+
+
+    public void onSignupSuccess() {
         register_button.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this);
@@ -70,10 +94,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String password = input_pw.getText().toString();
 
         // TODO: Implement your own signup logic here.
+        DBOperator op = DBOperator.getInstance();
 
         try {
             // insert new row
-            DBOperator op = DBOperator.getInstance();
             String insert_login_sql = " insert into Login (username, password) values ('%s', %s)";
             insert_login_sql = String.format(insert_login_sql, name, password);
             op.execSQL(insert_login_sql);
@@ -100,16 +124,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             this.startActivity(i);
             finish();
         } catch (Exception e) {
-            return;
+            String delete_login_query = "delete from Login where username = '%s'";
+            delete_login_query = String.format(delete_login_query, name);
+            op.execSQL(delete_login_query);
         }
-
-    }
-
-
-    public void onSignupSuccess() {
-        register_button.setEnabled(true);
-        setResult(RESULT_OK, null);
-        finish();
     }
 
     public void onSignupFailed() {
@@ -121,16 +139,29 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         //todo: make sure content submit consistent with the database design, i.e. username length
         boolean valid = true;
 
+        DBOperator op = DBOperator.getInstance();
+
         String name = input_name.getText().toString();
         String email = input_email.getText().toString();
         String password = input_pw.getText().toString();
         String reEnterPassword = input_pw2.getText().toString();
 
+        // check username length
         if (name.isEmpty() || name.length() < 3) {
             input_name.setError("at least 3 characters");
             valid = false;
         } else {
-            input_name.setError(null);
+            // check username exist
+            String username_sql = "select username, student_Email from Login, Student where Login.loginID = Student.loginID and username = '%s'";
+            username_sql = String.format(username_sql, name);
+            Cursor username_cursor = op.execQuery(username_sql);
+
+            if (username_cursor.getCount() != 0) {
+                input_name.setError("Already an user?");
+                valid = false;
+            } else {
+                input_name.setError(null);
+            }
         }
 
         //todo: Password strength checker
@@ -138,7 +169,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             input_email.setError("Please enter a valid email address");
             valid = false;
         } else {
-            input_email.setError(null);
+            //check email already exist
+            String email_sql = "select username, student_Email from Login, Student where Login.loginID = Student.loginID and student_email = '%s' ";
+            email_sql = String.format(email_sql, email);
+            Cursor email_cursor = op.execQuery(email_sql);
+
+            if (email_cursor.getCount() != 0) {
+                input_email.setError("Please enter another email address");
+                valid = false;
+            } else {
+                input_email.setError(null);
+            }
         }
 
 
@@ -154,30 +195,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             valid = false;
         } else {
             input_pw2.setError(null);
-        }
-
-        DBOperator op = DBOperator.getInstance();
-
-        String username_sql = "select username, student_Email from Login, Student where Login.loginID = Student.loginID and username = '%s'";
-        username_sql = String.format(username_sql, name);
-        Cursor username_cursor = op.execQuery(username_sql);
-
-        if (username_cursor.getCount() != 0) {
-            input_name.setError("Already an user?");
-            valid = false;
-        } else {
-            input_name.setError(null);
-        }
-
-        String email_sql = "select username, student_Email from Login, Student where Login.loginID = Student.loginID and student_email = '%s' ";
-        email_sql = String.format(email_sql, email);
-        Cursor email_cursor = op.execQuery(email_sql);
-
-        if (email_cursor.getCount() != 0) {
-            input_email.setError("Please enter another email address");
-            valid = false;
-        } else {
-            input_email.setError(null);
         }
 
         return valid;

@@ -5,11 +5,15 @@ public class MyStudentsItem {
     private String StudentName;
     private String MajorName;
     private String StudentID;
+    private String SkillID;
+    private String SkillName;
 
-    public MyStudentsItem(String NameText, String MajorText, String ID) {
-        StudentName = NameText;
-        MajorName = MajorText;
-        StudentID = ID;
+    public MyStudentsItem(String StdNameText, String StdMajorText, String StdID, String SklID, String SklName) {
+        StudentName = StdNameText;
+        MajorName = StdMajorText;
+        StudentID = StdID;
+        SkillID = SklID;
+        SkillName = SklName;
     }
 
     public String getStudentName() {
@@ -21,5 +25,13 @@ public class MyStudentsItem {
 
     public String getStudentID() {
         return StudentID;
+    }
+
+    public String getSkillID() {
+        return SkillID;
+    }
+
+    public String getSkillName() {
+        return SkillName;
     }
 }

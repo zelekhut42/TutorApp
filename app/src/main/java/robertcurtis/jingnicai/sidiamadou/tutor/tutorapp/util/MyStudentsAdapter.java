@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.My
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+        void onRemoveStudentClick(int position);
+        void onGraduateStudentClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -27,12 +30,16 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.My
     }
 
     public static class MyStudentsViewHolder extends RecyclerView.ViewHolder {
-        public TextView StudentNameView, StudentMajorView;
+        public TextView StudentNameView, StudentMajorView, SkillBeingTaught;
+        public ImageView removeStudent, graduateStudent;
 
         public MyStudentsViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             StudentNameView = itemView.findViewById(R.id.MyStudentsNameTextView);
             StudentMajorView = itemView.findViewById(R.id.MyStudentsMajorNameTextView);
+            SkillBeingTaught = itemView.findViewById(R.id.SkillBeingTaughtTextView);
+            removeStudent = itemView.findViewById(R.id.removeStudent);
+            graduateStudent = itemView.findViewById(R.id.graduateStudent);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -42,6 +49,36 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.My
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(position);
+                        }
+
+                    }
+
+                }
+            });
+
+            removeStudent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onRemoveStudentClick(position);
+                        }
+
+                    }
+
+                }
+            });
+
+            graduateStudent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onGraduateStudentClick(position);
                         }
 
                     }
@@ -74,6 +111,9 @@ public class MyStudentsAdapter extends RecyclerView.Adapter<MyStudentsAdapter.My
         if (testText == null) {
             testText = "No Major Provided";
         }
+        MyStudentsViewHolder.SkillBeingTaught.setText(currentItem.getSkillName());
+        MyStudentsViewHolder.removeStudent.setImageResource(R.drawable.ic_remove);
+        MyStudentsViewHolder.graduateStudent.setImageResource(R.drawable.ic_graduate);
 
         MyStudentsViewHolder.StudentMajorView.setText(testText);
     }

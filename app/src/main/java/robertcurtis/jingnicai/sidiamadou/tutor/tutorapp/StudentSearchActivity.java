@@ -117,12 +117,40 @@ public class StudentSearchActivity extends AppCompatActivity implements View.OnC
 
                     DBOperator.getInstance().execSQL(sql);
 
+                    String removeSQL = "delete from WantSkill where studentID=" + item.getStudentID() + " and skillID=" + skillID;
 
-                    Toast.makeText(getBaseContext(), "position= " + Integer.toString(position) + " SQL Complete", Toast.LENGTH_SHORT).show();
+                    DBOperator.getInstance().execSQL(removeSQL);
+
+                    StudentSearchList.remove(position);
+
+                    StudentSearchAdapter.notifyItemRemoved(position);
+
+
 
 
                 } else if (item.getButtonType().equals("remove")) {
-                    Toast.makeText(getBaseContext(), "position=" + Integer.toString(position), Toast.LENGTH_SHORT).show();
+                    String skillSQL = "select skillID from SkillSet where skill_Name=" + "'" + enteredSearch + "'";
+
+                    DBOperator op = DBOperator.getInstance();
+
+                    Cursor cSkillID = op.execQuery(skillSQL);
+
+                    String skillID = "";
+
+                    while(cSkillID.moveToNext()) {
+                        skillID = cSkillID.getString(0);
+                    }
+
+                    String removeSQL = "delete from IsTutoring where tutorID=" + TutorID + " and studentID=" + item.getStudentID() + "and skillID=" + skillID + ";";
+
+                    DBOperator.getInstance().execSQL(removeSQL);
+
+                    StudentSearchList.remove(position);
+
+                    StudentSearchAdapter.notifyItemRemoved(position);
+
+
+
                 }
 
 
@@ -148,36 +176,72 @@ public class StudentSearchActivity extends AppCompatActivity implements View.OnC
 
             enteredSearch = searchEditText.getText().toString();
 
-            String myStudentsSQL = "select Student.studentID from Student inner join IsTutoring on Student.studentID=IsTutoring.studentID where IsTutoring.tutorID=" + TutorID;
+            String myStudentsSQL = "select Student.studentID, IsTutoring.StudentHasPassed, IsTutoring.skillID from Student inner join IsTutoring on Student.studentID=IsTutoring.studentID where IsTutoring.tutorID=" + TutorID;
 
 
-            String sql = "select Student.student_FName, Student.student_LName, Major.major_Name, Student.studentID from Student inner join WantSkill on Student.studentID=WantSkill.studentID inner join SkillSet on WantSkill.skillID=SkillSet.skillID left join Major on Student.majorID=Major.majorID where SkillSet.skill_Name=" + "'" + enteredSearch + "'";
+            String sql = "select Student.student_FName, Student.student_LName, Major.major_Name, Student.studentID, WantSkill.skillID from Student inner join WantSkill on Student.studentID=WantSkill.studentID inner join SkillSet on WantSkill.skillID=SkillSet.skillID left join Major on Student.majorID=Major.majorID where SkillSet.skill_Name=" + "'" + enteredSearch + "'";
 
             DBOperator op = DBOperator.getInstance();
 
             Cursor cMyStudents = op.execQuery(myStudentsSQL);
 
             ArrayList<String> MyStudents = new ArrayList<>();
+            ArrayList<String> MyStudentsPassed = new ArrayList<>();
+            ArrayList<String> MyStudentsSkillID = new ArrayList<>();
+            ArrayList<String> MyStudentsPassedSkillID = new ArrayList<>();
 
             while(cMyStudents.moveToNext()) {
-                MyStudents.add(cMyStudents.getString(0));
+                String isGraduated = cMyStudents.getString(1);
+
+                if (isGraduated.equals("0")) {
+                    MyStudents.add(cMyStudents.getString(0));
+                    MyStudentsSkillID.add(cMyStudents.getString(2));
+                } else if (isGraduated.equals("1")) {
+                    MyStudentsPassed.add(cMyStudents.getString(0));
+                    MyStudentsPassedSkillID.add(cMyStudents.getString(2));
+                }
             }
+
+
 
             Cursor cursor = op.execQuery(sql);
 
 
             while(cursor.moveToNext()) {
-
+                String skillID = cursor.getString(4);
                 String ID = cursor.getString(3);
                 String ButtonType = "";
 
+                Boolean doNotAdd = false;
+
                 if (MyStudents.contains(ID)) {
-                    ButtonType = "remove";
+
+                    int index = MyStudents.indexOf(ID);
+
+                    if (MyStudentsSkillID.get(index).equals(skillID)) {
+                        ButtonType = "remove";
+                    } else {
+                        ButtonType = "add";
+                    }
+
+                }else if (MyStudentsPassed.contains(ID)) {
+                    int index = MyStudentsPassed.indexOf(ID);
+
+                    if(MyStudentsPassedSkillID.get(index).equals(skillID)) {
+                        doNotAdd = true;
+                    } else {
+                        ButtonType = "add";
+                    }
+
                 } else {
                     ButtonType = "add";
                 }
 
-                StudentSearchList.add(new StudentSearchItem(cursor.getString(0) + " " +cursor.getString(1), cursor.getString(2), ID, ButtonType));
+                if (doNotAdd) {
+                    //do not add
+                } else {
+                    StudentSearchList.add(new StudentSearchItem(cursor.getString(0) + " " + cursor.getString(1), cursor.getString(2), ID, ButtonType, skillID));
+                }
             }
 
 

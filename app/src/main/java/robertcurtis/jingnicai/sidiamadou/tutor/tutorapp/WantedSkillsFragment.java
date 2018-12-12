@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.R;
 import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.DBOperator;
 import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.WantedSkillsAdapter;
 
@@ -23,13 +22,15 @@ public class WantedSkillsFragment extends Fragment {
     private RecyclerView WantedSkillsRecyclerView;
     private WantedSkillsAdapter WantedSkillsAdapter;
     private RecyclerView.LayoutManager WantedSkillsLayoutManager;
-    private ArrayList<WantedSkillsItem> WantedSkillList = new ArrayList<>();
+    private ArrayList<WantedSkillsItem> WantedSkillList;
 
     private String StudentID;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        WantedSkillList = new ArrayList<>();
 
         String sql;
 
@@ -39,7 +40,7 @@ public class WantedSkillsFragment extends Fragment {
 
         Cursor cursor = DBOperator.getInstance().execQuery(sql);
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             WantedSkillList.add(new WantedSkillsItem(cursor.getString(0), cursor.getString(1)));
         }
 
@@ -68,11 +69,51 @@ public class WantedSkillsFragment extends Fragment {
                 startActivity(i);
 
 
+            }
 
+            @Override
+            public void onRemoveWantedSkillClick(int position) {
+                WantedSkillsItem item = WantedSkillList.get(position);
+
+                String sql = "delete from WantSkill where studentID=" + StudentID + " and skillID=" + item.getSkillID() + ";";
+
+                DBOperator.getInstance().execSQL(sql);
+
+                WantedSkillList.remove(position);
+
+
+                WantedSkillsAdapter.notifyItemRemoved(position);
             }
         });
 
-       return view;
+        return view;
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+
+        if (getView() != null) {
+            WantedSkillList.clear();
+
+            String sql;
+
+
+            sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet inner join WantSkill on SkillSet.skillID=WantSkill.skillID where WantSkill.studentID=" + StudentID;
+
+
+            Cursor cursor = DBOperator.getInstance().execQuery(sql);
+
+            while (cursor.moveToNext()) {
+                WantedSkillList.add(new WantedSkillsItem(cursor.getString(0), cursor.getString(1)));
+            }
+
+            WantedSkillsAdapter.notifyDataSetChanged();
+
+        }
+
+
+        super.setUserVisibleHint(isVisibleToUser);
     }
 
     public void addID(String studentID) {

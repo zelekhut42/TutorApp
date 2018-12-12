@@ -3,6 +3,8 @@ package robertcurtis.jingnicai.sidiamadou.tutor.tutorapp;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -41,7 +43,7 @@ public class MyTutorsActivity extends AppCompatActivity {
 
 
 
-        String sql = "select Tutor.tutor_FName, Tutor.tutor_LName, Major.major_Name, Tutor.tutorID from Tutor inner join IsTutoring on Tutor.tutorID=IsTutoring.tutorID left join Major on Tutor.majorID=Major.majorID where IsTutoring.studentID=" + StudentID;
+        String sql = "select Tutor.tutor_FName, Tutor.tutor_LName, Major.major_Name, Tutor.tutorID, SkillSet.skillID, SkillSet.skill_Name, IsTutoring.StudentHasPassed from Tutor inner join IsTutoring on Tutor.tutorID=IsTutoring.tutorID inner join SkillSet on IsTutoring.skillID=SkillSet.skillID left join Major on Tutor.majorID=Major.majorID where IsTutoring.studentID=" + StudentID + ";";
 
 
         DBOperator op = DBOperator.getInstance();
@@ -52,10 +54,17 @@ public class MyTutorsActivity extends AppCompatActivity {
 
 
         while(cursor.moveToNext()) {
-            try {
-                MyTutorsList.add(new MyTutorsItem(cursor.getString(0) + " " + cursor.getString(1), cursor.getString(2), cursor.getString(3)));
-            } catch (Exception e) {
-                MyTutorsList.add(new MyTutorsItem(cursor.getString(0) + " " + cursor.getString(1), "None Listed", cursor.getString(3)));
+            String hasPassed = cursor.getString(6);
+
+            if(hasPassed.equals("0")) {
+
+                try {
+                    MyTutorsList.add(new MyTutorsItem(cursor.getString(0) + " " + cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5)));
+                } catch (Exception e) {
+                    MyTutorsList.add(new MyTutorsItem(cursor.getString(0) + " " + cursor.getString(1), "None Listed", cursor.getString(3), cursor.getString(4), cursor.getString(5)));
+                }
+            } else {
+                //do nothing
             }
         }
 
@@ -90,8 +99,23 @@ public class MyTutorsActivity extends AppCompatActivity {
 
 
             }
+
+            @Override
+            public void onRemoveTutorClick(int position) {
+                MyTutorsItem item = MyTutorsList.get(position);
+
+                String removeSQL = "delete from IsTutoring where tutorID=" + item.getTutorID() + " and studentID=" + StudentID + " and skillID=" + item.getSkillID() + ";";
+
+                DBOperator.getInstance().execSQL(removeSQL);
+
+                MyTutorsList.remove(position);
+
+                MyTutorsAdapter.notifyItemRemoved(position);
+            }
         });
 
     }
 
 }
+
+

@@ -6,16 +6,18 @@ public class StudentSearchItem {
     private String MajorName;
     private String StudentID;
     private String ButtonType;
+    private String SkillID;
 
 
 
 
 
-    public StudentSearchItem(String NameText, String MajorText, String ID, String type) {
+    public StudentSearchItem(String NameText, String MajorText, String ID, String type, String skillID) {
         StudentName = NameText;
         MajorName = MajorText;
         StudentID = ID;
         ButtonType = type;
+        SkillID = skillID;
 
         if (MajorName == null) {
             MajorName = "none listed";
@@ -35,5 +37,13 @@ public class StudentSearchItem {
 
     public String getStudentID() {
         return StudentID;
+    }
+
+    public void setButtonType(String buttonType) {
+        ButtonType = buttonType;
+    }
+
+    public String getSkillID() {
+        return SkillID;
     }
 }

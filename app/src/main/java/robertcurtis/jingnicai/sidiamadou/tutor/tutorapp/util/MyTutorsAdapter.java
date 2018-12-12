@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class MyTutorsAdapter extends RecyclerView.Adapter<MyTutorsAdapter.MyTuto
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+        void onRemoveTutorClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -28,12 +30,15 @@ public class MyTutorsAdapter extends RecyclerView.Adapter<MyTutorsAdapter.MyTuto
     }
 
     public static class MyTutorsViewHolder extends RecyclerView.ViewHolder {
-        public TextView TutorNameView, TutorMajorView;
+        public TextView TutorNameView, TutorMajorView, skillBeingTaught;
+        public ImageView removeTutor;
 
         public MyTutorsViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             TutorNameView = itemView.findViewById(R.id.MyTutorsNameTextView);
             TutorMajorView = itemView.findViewById(R.id.MyTutorsMajorNameTextView);
+            skillBeingTaught = itemView.findViewById(R.id.MyTutorsSkillTaughtTextView);
+            removeTutor = itemView.findViewById(R.id.MyTutorsRemoveStudent);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -43,6 +48,21 @@ public class MyTutorsAdapter extends RecyclerView.Adapter<MyTutorsAdapter.MyTuto
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(position);
+                        }
+
+                    }
+
+                }
+            });
+
+            removeTutor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onRemoveTutorClick(position);
                         }
 
                     }
@@ -77,6 +97,8 @@ public class MyTutorsAdapter extends RecyclerView.Adapter<MyTutorsAdapter.MyTuto
         }
 
         MyTutorsViewHolder.TutorMajorView.setText(testText);
+        MyTutorsViewHolder.skillBeingTaught.setText(currentItem.getSkillName());
+        MyTutorsViewHolder.removeTutor.setImageResource(R.drawable.ic_remove);
     }
 
     @Override

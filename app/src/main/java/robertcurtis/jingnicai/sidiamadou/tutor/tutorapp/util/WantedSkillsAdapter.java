@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class WantedSkillsAdapter extends RecyclerView.Adapter<WantedSkillsAdapte
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+        void onRemoveWantedSkillClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -31,10 +33,12 @@ public class WantedSkillsAdapter extends RecyclerView.Adapter<WantedSkillsAdapte
 
     public static class WantedSkillsViewHolder extends RecyclerView.ViewHolder {
         public TextView SkillNameView;
+        public ImageView removeWantedSkillButton;
 
         public WantedSkillsViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             SkillNameView = itemView.findViewById(R.id.WantedSkillsTextView);
+            removeWantedSkillButton = itemView.findViewById(R.id.removeWantedSkill);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -44,6 +48,21 @@ public class WantedSkillsAdapter extends RecyclerView.Adapter<WantedSkillsAdapte
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(position);
+                        }
+
+                    }
+
+                }
+            });
+
+            removeWantedSkillButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onRemoveWantedSkillClick(position);
                         }
 
                     }
@@ -71,6 +90,7 @@ public class WantedSkillsAdapter extends RecyclerView.Adapter<WantedSkillsAdapte
         WantedSkillsItem currentItem = WantedSkillsList.get(i);
 
         WantedSkillsViewHolder.SkillNameView.setText(currentItem.getSkillName());
+        WantedSkillsViewHolder.removeWantedSkillButton.setImageResource(R.drawable.ic_remove);
     }
 
     @Override

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TutorApp</string>
+    <string name="app_name">iTutor</string>
     <string name="LoginPasswordHint">Password</string>
     <string name="LoginUsernameText">Username</string>
     <string name="LoginButtonText">Login</string>
@@ -53,5 +53,8 @@
     <string name="personal_info_textview">Tell us more about you!</string>
     <string name="continue_button">Continue</string>
     <string name="major_pick">Major:</string>
+    <string name="TeachingTexztString">Skill:</string>
+    <string name="MyTutorsSkillTaughtTextView">Skill:</string>
+    <string name="title_activity_try">TryActivity</string>
 
 </resources>
