@@ -11,7 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
+
 import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.DBOperator;
 import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.MySkillsAdapter;
 
@@ -21,7 +23,7 @@ public class MySkillsFragment extends Fragment {
     private RecyclerView MySkillsRecyclerView;
     private MySkillsAdapter MySkillsAdapter;
     private RecyclerView.LayoutManager MySkillsLayoutManager;
-    private ArrayList<MySkillsItem> MySkillList = new ArrayList<>();
+    private ArrayList<MySkillsItem> MySkillList;
 
     private String StudentID;
     private String TutorID;
@@ -29,14 +31,13 @@ public class MySkillsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        MySkillList.clear();
-
+        MySkillList = new ArrayList<>();
 
 
         String sql;
         String ButtonType = "none";
 
-        if(!"null".equals(TutorID)) {
+        if (!"null".equals(TutorID)) {
             sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet inner join HasSkills on SkillSet.skillID=HasSkills.skillID where HasSkills.tutorID=" + TutorID;
             ButtonType = "remove";
         } else {
@@ -45,7 +46,7 @@ public class MySkillsFragment extends Fragment {
 
         Cursor cursor = DBOperator.getInstance().execQuery(sql);
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             MySkillList.add(new MySkillsItem(cursor.getString(0), cursor.getString(1), ButtonType));
         }
         View view = inflater.inflate(R.layout.my_skills_fragment, container, false);
@@ -70,7 +71,6 @@ public class MySkillsFragment extends Fragment {
 
                 i.putExtras(extras);
                 startActivity(i);
-
 
 
             }
@@ -106,11 +106,10 @@ public class MySkillsFragment extends Fragment {
             MySkillList.clear();
 
 
-
             String sql;
             String ButtonType = "none";
 
-            if(!"null".equals(TutorID)) {
+            if (!"null".equals(TutorID)) {
                 sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet inner join HasSkills on SkillSet.skillID=HasSkills.skillID where HasSkills.tutorID=" + TutorID;
                 ButtonType = "remove";
             } else {
@@ -119,7 +118,7 @@ public class MySkillsFragment extends Fragment {
 
             Cursor cursor = DBOperator.getInstance().execQuery(sql);
 
-            while(cursor.moveToNext()) {
+            while (cursor.moveToNext()) {
                 MySkillList.add(new MySkillsItem(cursor.getString(0), cursor.getString(1), ButtonType));
             }
 

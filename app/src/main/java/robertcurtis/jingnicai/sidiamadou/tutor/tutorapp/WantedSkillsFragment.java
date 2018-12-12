@@ -1,6 +1,5 @@
 package robertcurtis.jingnicai.sidiamadou.tutor.tutorapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,14 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.R;
 import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.DBOperator;
 import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.WantedSkillsAdapter;
 
@@ -25,7 +22,7 @@ public class WantedSkillsFragment extends Fragment {
     private RecyclerView WantedSkillsRecyclerView;
     private WantedSkillsAdapter WantedSkillsAdapter;
     private RecyclerView.LayoutManager WantedSkillsLayoutManager;
-    private ArrayList<WantedSkillsItem> WantedSkillList = new ArrayList<>();
+    private ArrayList<WantedSkillsItem> WantedSkillList;
 
     private String StudentID;
 
@@ -33,7 +30,7 @@ public class WantedSkillsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        WantedSkillList.clear();
+        WantedSkillList = new ArrayList<>();
 
         String sql;
 
@@ -43,7 +40,7 @@ public class WantedSkillsFragment extends Fragment {
 
         Cursor cursor = DBOperator.getInstance().execQuery(sql);
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             WantedSkillList.add(new WantedSkillsItem(cursor.getString(0), cursor.getString(1)));
         }
 
@@ -72,7 +69,6 @@ public class WantedSkillsFragment extends Fragment {
                 startActivity(i);
 
 
-
             }
 
             @Override
@@ -90,7 +86,7 @@ public class WantedSkillsFragment extends Fragment {
             }
         });
 
-       return view;
+        return view;
     }
 
 
@@ -108,14 +104,13 @@ public class WantedSkillsFragment extends Fragment {
 
             Cursor cursor = DBOperator.getInstance().execQuery(sql);
 
-            while(cursor.moveToNext()) {
+            while (cursor.moveToNext()) {
                 WantedSkillList.add(new WantedSkillsItem(cursor.getString(0), cursor.getString(1)));
             }
 
             WantedSkillsAdapter.notifyDataSetChanged();
 
         }
-
 
 
         super.setUserVisibleHint(isVisibleToUser);
