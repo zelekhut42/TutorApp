@@ -98,7 +98,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         try {
             // insert new row
-            String insert_login_sql = " insert into Login (username, password) values ('%s', %s)";
+            String insert_login_sql = " insert into Login (username, password) values ('%s', '%s')";
             insert_login_sql = String.format(insert_login_sql, name, password);
             op.execSQL(insert_login_sql);
 
