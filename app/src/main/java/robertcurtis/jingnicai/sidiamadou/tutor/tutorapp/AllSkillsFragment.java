@@ -11,9 +11,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
-import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.DBOperator;
+
 import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.AllSkillsAdapter;
+import robertcurtis.jingnicai.sidiamadou.tutor.tutorapp.util.DBOperator;
 
 public class AllSkillsFragment extends Fragment {
     private static final String TAG = "AllSkillsFragment";
@@ -21,7 +23,7 @@ public class AllSkillsFragment extends Fragment {
     private RecyclerView AllSkillsRecyclerView;
     private AllSkillsAdapter AllSkillsAdapter;
     private RecyclerView.LayoutManager AllSkillsLayoutManager;
-    private ArrayList<AllSkillsItem> AllSkillList = new ArrayList<>();
+    private ArrayList<AllSkillsItem> AllSkillList;
     private String StudentID;
     private String TutorID;
 
@@ -29,7 +31,7 @@ public class AllSkillsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        AllSkillList.clear();
+        AllSkillList = new ArrayList<>();
 
         ArrayList<String> wantedSkills = new ArrayList<>();
 
@@ -59,19 +61,19 @@ public class AllSkillsFragment extends Fragment {
         String sql;
 
 
-        sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet" ;
+        sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet";
 
 
         Cursor cursor = DBOperator.getInstance().execQuery(sql);
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             String skillID = cursor.getString(1);
             String MySkillsButtonType = "none";
             String WantedSkillsButtonType = "none";
 
             if (!TutorID.equals("null")) {
 
-                if(mySkills.contains(skillID)) {
+                if (mySkills.contains(skillID)) {
                     MySkillsButtonType = "remove";
                 } else {
                     MySkillsButtonType = "add";
@@ -81,14 +83,13 @@ public class AllSkillsFragment extends Fragment {
 
             if (!StudentID.equals("null")) {
 
-                if(wantedSkills.contains(skillID)) {
+                if (wantedSkills.contains(skillID)) {
                     WantedSkillsButtonType = "remove";
                 } else {
                     WantedSkillsButtonType = "add";
                 }
 
             }
-
 
 
             AllSkillList.add(new AllSkillsItem(cursor.getString(0), skillID, WantedSkillsButtonType, MySkillsButtonType));
@@ -107,7 +108,7 @@ public class AllSkillsFragment extends Fragment {
         AllSkillsAdapter.setOnItemClickListener(new AllSkillsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-               AllSkillsItem item = AllSkillList.get(position);
+                AllSkillsItem item = AllSkillList.get(position);
 
                 Bundle extras = new Bundle();
                 extras.putString("SkillID", item.getSkillID());
@@ -117,7 +118,6 @@ public class AllSkillsFragment extends Fragment {
 
                 i.putExtras(extras);
                 startActivity(i);
-
 
 
             }
@@ -185,7 +185,6 @@ public class AllSkillsFragment extends Fragment {
         });
 
 
-
         return view;
     }
 
@@ -193,8 +192,7 @@ public class AllSkillsFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
 
         if (getView() != null) {
-           AllSkillList.clear();
-
+            AllSkillList.clear();
 
 
             AllSkillList.clear();
@@ -227,19 +225,19 @@ public class AllSkillsFragment extends Fragment {
             String sql;
 
 
-            sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet" ;
+            sql = "select SkillSet.skill_Name, SkillSet.skillID From SkillSet";
 
 
             Cursor cursor = DBOperator.getInstance().execQuery(sql);
 
-            while(cursor.moveToNext()) {
+            while (cursor.moveToNext()) {
                 String skillID = cursor.getString(1);
                 String MySkillsButtonType = "none";
                 String WantedSkillsButtonType = "none";
 
                 if (!TutorID.equals("null")) {
 
-                    if(mySkills.contains(skillID)) {
+                    if (mySkills.contains(skillID)) {
                         MySkillsButtonType = "remove";
                     } else {
                         MySkillsButtonType = "add";
@@ -249,14 +247,13 @@ public class AllSkillsFragment extends Fragment {
 
                 if (!StudentID.equals("null")) {
 
-                    if(wantedSkills.contains(skillID)) {
+                    if (wantedSkills.contains(skillID)) {
                         WantedSkillsButtonType = "remove";
                     } else {
                         WantedSkillsButtonType = "add";
                     }
 
                 }
-
 
 
                 AllSkillList.add(new AllSkillsItem(cursor.getString(0), skillID, WantedSkillsButtonType, MySkillsButtonType));

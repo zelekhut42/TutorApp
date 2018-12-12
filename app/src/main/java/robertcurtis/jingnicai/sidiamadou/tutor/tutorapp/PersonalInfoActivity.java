@@ -80,12 +80,34 @@ public class PersonalInfoActivity extends AppCompatActivity implements View.OnCl
         String insert_sql = "insert into Student (student_FName, student_LName, student_Email, student_tel, majorID, loginID) values ('%s', '%s', '%s', '%s', %d, %d)";
         insert_sql = String.format(insert_sql, firstname, lastname, email, telephone, Integer.valueOf(major_id), Integer.valueOf(login_id));
 
+        String get_latest_student_id_sql = "select studentID from Student where student_FName = '%s' and student_LName = '%s' and student_Email = '%s' and student_tel = '%s' and  majorID = %d and loginID = %d ";
+        get_latest_student_id_sql = String.format(get_latest_student_id_sql, firstname, lastname, email, telephone, Integer.valueOf(major_id), Integer.valueOf(login_id));
+
+        String student_id = null;
         try {
             op.execSQL(insert_sql);
+
+            cursor = op.execQuery(get_latest_student_id_sql);
+
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    student_id = cursor.getString(0);
+                    cursor.moveToNext();
+                }
+            }
+
             Intent i = new Intent(this, LandingPageActivity.class);
+            i.putExtra("StudentID",student_id);
             this.startActivity(i);
             finish();
         } catch (Exception e) {
+            String delete_student_query = "delete from Student where student_FName = '%s' and student_LName = '%s' and student_Email = '%s' and student_tel = '%s' and  majorID = %d and loginID = %d ";
+            delete_student_query = String.format(delete_student_query, firstname, lastname, email, telephone, Integer.valueOf(major_id), Integer.valueOf(login_id));
+            op.execSQL(delete_student_query);
+
+//            String delete_login_query = "delete from Login where loginID = %d";
+//            delete_login_query = String.format(delete_login_query, Integer.valueOf(login_id));
+//            op.execSQL(delete_login_query);
             finish();
         }
 
